@@ -12,7 +12,7 @@ contract("StandardERC20", (accounts) => {
   const spender = accounts[2];
   const spenderAmount = web3.utils.toBN(300000000000000000);
   const receipient2 = accounts[3];
-  const spenderAdd = web3.utils.toBN(1);
+  const spenderAdd = web3.utils.toBN(100000000000000000);
   let standardERC20Instance;
   before(async () => {
     standardERC20Instance = await StandardERC20.deployed();
@@ -168,7 +168,7 @@ it("test increaseAllowance()", async () => {
 
     const allowanceIncreaseSpender = await standardERC20Instance.allowance.call(
       receipient1,
-      spender
+      spender           
     );
 
     assert(
@@ -179,34 +179,35 @@ it("test increaseAllowance()", async () => {
 
 // Decrease Allowance
 it("test decreaseAllowance()", async () => {
-    const oldAllowanceSpender = await standardERC20Instance.allowance.call(
-      receipient1,
-      spender
-    );
-    const increaseAllowanceTx = await standardERC20Instance.decreaseAllowance(
-      spender,
-      spenderAdd,
-      { from: spender }
-    );
+  const oldAllowanceSpender = await standardERC20Instance.allowance.call(
+    receipient1,
+    spender
+  );
+  const decreaseAllowanceTx = await standardERC20Instance.decreaseAllowance(
+    spender,
+    spenderAdd,
+    { from: receipient1 }
+  );
 
-    const newAllowanceSpender =  new BigNumber(oldAllowanceSpender - spenderAdd)
-    
-    truffleAssert.eventEmitted(increaseAllowanceTx, "Approval", (obj) => {
-      return (
-        obj.owner === receipient1 &&
-        obj.spender === spender &&
-        new BigNumber(obj.value).isEqualTo(newAllowanceSpender)
-      );
-    });
-
-    const allowanceDecreaseSpender = await standardERC20Instance.allowance.call(
-      receipient1,
-      spender
-    );
-
-    assert(
-      newAllowanceSpender.isEqualTo(allowanceDecreaseSpender),
-      "The allowance increase is not as expected"
+  const newAllowanceSpender =  new BigNumber(oldAllowanceSpender - spenderAdd)
+  
+  truffleAssert.eventEmitted(decreaseAllowanceTx, "Approval", (obj) => {
+    return (
+      obj.owner === receipient1 &&
+      obj.spender === spender &&
+      new BigNumber(obj.value).isEqualTo(newAllowanceSpender)
     );
   });
+
+  const allowanceDecreaseSpender = await standardERC20Instance.allowance.call(
+    receipient1,
+    spender           
+  );
+
+  assert(
+    newAllowanceSpender.isEqualTo(allowanceDecreaseSpender),
+    "The allowance increase is not as expected"
+  );
+});
+
 });

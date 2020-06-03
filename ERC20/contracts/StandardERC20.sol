@@ -135,7 +135,7 @@ contract StandardERC20 is IERC20 {
         _approve(sender, msg.sender, _allowances[sender][msg.sender] - amount);
         return true;
     }
- 
+     
     function _transfer(address sender, address recipient, uint256 amount) internal {
         require(recipient != address(0),"ERC20: transfer from zero transfer");
         require(sender != address(0),"ERC20: transfer from zero transfer");
@@ -158,13 +158,13 @@ contract StandardERC20 is IERC20 {
 
     // Atomatically increases the allowance granted by spender to caller
     function increaseAllowance(address spender, uint256 addedValue)  public returns (bool){
-       _approve(spender, msg.sender, _allowances[msg.sender][spender] + addedValue);
+       _approve(msg.sender, spender, _allowances[msg.sender][spender] + addedValue);
         return true;
     }
 
     // Atomatically decreases the allowance granted by spender to caller
     function decreaseAllowance(address spender, uint256 addedValue)  public returns (bool){
-       _approve(spender, msg.sender, _allowances[msg.sender][spender] - addedValue);
+       _approve(msg.sender, spender,  _allowances[msg.sender][spender] - addedValue);
         return true;
     }
 }
