@@ -151,9 +151,9 @@ it("test increaseAllowance()", async () => {
       spender
     );
     const increaseAllowanceTx = await standardERC20Instance.increaseAllowance(
-      receipient1,
+      spender,
       spenderAdd,
-      { from: spender }
+      { from: receipient1 }
     );
 
     const newAllowanceSpender =  new BigNumber(oldAllowanceSpender + spenderAdd)
@@ -184,7 +184,7 @@ it("test decreaseAllowance()", async () => {
       spender
     );
     const increaseAllowanceTx = await standardERC20Instance.decreaseAllowance(
-      receipient1,
+      spender,
       spenderAdd,
       { from: spender }
     );
@@ -208,5 +208,5 @@ it("test decreaseAllowance()", async () => {
       newAllowanceSpender.isEqualTo(allowanceDecreaseSpender),
       "The allowance increase is not as expected"
     );
-    });
+  });
 });

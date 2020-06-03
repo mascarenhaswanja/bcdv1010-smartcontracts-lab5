@@ -158,13 +158,13 @@ contract StandardERC20 is IERC20 {
 
     // Atomatically increases the allowance granted by spender to caller
     function increaseAllowance(address spender, uint256 addedValue)  public returns (bool){
-       _approve(spender, msg.sender, _allowances[spender][msg.sender] + addedValue);
+       _approve(spender, msg.sender, _allowances[msg.sender][spender] + addedValue);
         return true;
     }
 
     // Atomatically decreases the allowance granted by spender to caller
     function decreaseAllowance(address spender, uint256 addedValue)  public returns (bool){
-       _approve(spender, msg.sender, _allowances[spender][msg.sender] - addedValue);
+       _approve(spender, msg.sender, _allowances[msg.sender][spender] - addedValue);
         return true;
     }
 }
